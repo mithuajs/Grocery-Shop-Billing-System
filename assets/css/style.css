@@ -1,0 +1,17 @@
+@media print {
+
+    input,
+    button {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+}

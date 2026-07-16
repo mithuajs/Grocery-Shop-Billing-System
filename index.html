@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Shop Billing System</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/animation.css">
+</head>
+
+<body class="bg-slate-100">
+
+    <div class="container mx-auto px-4 py-8">
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-green-600">
+                Grocery Shop Billing System
+            </h1>
+            <p class="text-gray-500">
+                Manage your products and generate bills with ease.
+            </p>
+        </div>
+
+        <!-- Product Form -->
+        <div class="card bg-white shadow-lg">
+            <div class="card-body">
+
+                <h2 class="card-title">
+                    Add Product
+                </h2>
+
+                <div class="grid md:grid-cols-4 gap-4">
+
+                    <input type="text" id="productName" placeholder="Product Name" class="input input-bordered w-full">
+
+                    <input type="number" id="price" placeholder="Price" class="input input-bordered w-full">
+
+                    <input type="number" id="quantity" placeholder="Quantity" class="input input-bordered w-full">
+
+                    <button id="addProductBtn" class="btn btn-success">
+                        Add Product
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Product Table -->
+        <div class="card bg-white shadow-lg mt-8">
+            <div class="card-body">
+
+                <h2 class="card-title">
+                    Product List
+                </h2>
+
+                <div class="overflow-x-auto">
+
+                    <table class="table table-zebra">
+
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="productTableBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bill Summary -->
+        <div class="card bg-white shadow-lg mt-8">
+            <div class="card-body">
+
+                <h2 class="card-title">
+                    Bill Summary
+                </h2>
+
+                <div class="flex justify-between text-xl font-bold">
+                    <span>Grand Total</span>
+                    <span id="grandTotal">৳0</span>
+                </div>
+
+                <div class="mt-6 flex gap-4">
+
+                    <button id="printBtn" class="btn btn-primary">
+                        Print Bill
+                    </button>
+
+                    <button id="clearBtn" class="btn btn-error">
+                        Clear Bill
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/javascript.js"></script>
+
+</body>
+
+</html>

@@ -23,6 +23,8 @@ let serial = 1;
 let totalBill = 0;
 let products = [];
 
+let editProductId = null;
+
 // =============================
 // Save Local Storage
 // =============================
@@ -47,7 +49,6 @@ function updateSerialNumbers() {
 }
 
 
-
 // =============================
 // Add Product
 // =============================
@@ -63,7 +64,9 @@ addProductBtn.addEventListener("click", function () {
         return;
     }
 
+    // =============================
     // Edit Mode
+    // =============================
     if (editProductId !== null) {
 
         const product = products.find(product => product.id === editProductId);
@@ -74,11 +77,10 @@ addProductBtn.addEventListener("click", function () {
         product.price = productPrice;
         product.quantity = productQuantity;
 
-        saveProducts();
-
-        loadProducts();
-
         editProductId = null;
+
+        saveProducts();
+        loadProducts();
 
         addProductBtn.innerText = "Add Product";
 
@@ -91,11 +93,9 @@ addProductBtn.addEventListener("click", function () {
         return;
     }
 
-    const total = productPrice * productQuantity;
-
-    totalBill += total;
-
-    grandTotal.innerText = "৳" + totalBill;
+    // =============================
+    // Add New Product
+    // =============================
 
     const product = {
         id: Date.now(),
@@ -107,36 +107,7 @@ addProductBtn.addEventListener("click", function () {
     products.push(product);
 
     saveProducts();
-
-    const row = `
-<tr>
-    <td>${serial}</td>
-    <td>${name}</td>
-    <td>৳${productPrice}</td>
-    <td>${productQuantity}</td>
-    <td>৳${total}</td>
-   <td class="space-x-2">
-
-    <button
-        class="btn btn-info btn-sm edit-btn"
-        data-id="${product.id}">
-        Edit
-    </button>
-
-    <button
-        class="btn btn-error btn-sm delete-btn"
-        data-id="${product.id}"
-        data-total="${total}">
-        Delete
-    </button>
-
-</td>
-</tr>
-`;
-
-    productTableBody.innerHTML += row;
-
-    serial++;
+    loadProducts();
 
     productName.value = "";
     price.value = "";
@@ -337,6 +308,8 @@ function loadProducts() {
     grandTotal.innerText = "৳" + totalBill;
 
     serial = products.length + 1;
+
+    addProductBtn.innerText = "Add Product";
 
 }
 

@@ -1,5 +1,54 @@
 
 // =============================
+// DOM Elements
+// =============================
+
+const productName = document.getElementById("productName");
+const price = document.getElementById("price");
+const quantity = document.getElementById("quantity");
+
+const addProductBtn = document.getElementById("addProductBtn");
+
+const productTableBody = document.getElementById("productTableBody");
+const grandTotal = document.getElementById("grandTotal");
+
+const printBtn = document.getElementById("printBtn");
+const clearBtn = document.getElementById("clearBtn");
+
+// =============================
+// Variables
+// =============================
+
+let serial = 1;
+let totalBill = 0;
+let products = [];
+
+// =============================
+// Save Local Storage
+// =============================
+
+function saveProducts() {
+    localStorage.setItem("products", JSON.stringify(products));
+}
+
+// =============================
+// Update Serial Number
+// =============================
+
+function updateSerialNumbers() {
+
+    const rows = productTableBody.querySelectorAll("tr");
+
+    rows.forEach((row, index) => {
+        row.cells[0].innerText = index + 1;
+    });
+
+    serial = rows.length + 1;
+}
+
+
+
+// =============================
 // Add Product
 // =============================
 
@@ -11,6 +60,34 @@ addProductBtn.addEventListener("click", function () {
 
     if (name === "" || productPrice <= 0 || productQuantity <= 0) {
         alert("Please fill all fields correctly.");
+        return;
+    }
+
+    // Edit Mode
+    if (editProductId !== null) {
+
+        const product = products.find(product => product.id === editProductId);
+
+        if (!product) return;
+
+        product.name = name;
+        product.price = productPrice;
+        product.quantity = productQuantity;
+
+        saveProducts();
+
+        loadProducts();
+
+        editProductId = null;
+
+        addProductBtn.innerText = "Add Product";
+
+        productName.value = "";
+        price.value = "";
+        quantity.value = "";
+
+        productName.focus();
+
         return;
     }
 
@@ -32,22 +109,30 @@ addProductBtn.addEventListener("click", function () {
     saveProducts();
 
     const row = `
-    <tr>
-        <td>${serial}</td>
-        <td>${name}</td>
-        <td>৳${productPrice}</td>
-        <td>${productQuantity}</td>
-        <td>৳${total}</td>
-        <td>
-            <button
-                class="btn btn-error btn-sm delete-btn"
-                data-id="${product.id}"
-                data-total="${total}">
-                Delete
-            </button>
-        </td>
-    </tr>
-    `;
+<tr>
+    <td>${serial}</td>
+    <td>${name}</td>
+    <td>৳${productPrice}</td>
+    <td>${productQuantity}</td>
+    <td>৳${total}</td>
+   <td class="space-x-2">
+
+    <button
+        class="btn btn-info btn-sm edit-btn"
+        data-id="${product.id}">
+        Edit
+    </button>
+
+    <button
+        class="btn btn-error btn-sm delete-btn"
+        data-id="${product.id}"
+        data-total="${total}">
+        Delete
+    </button>
+
+</td>
+</tr>
+`;
 
     productTableBody.innerHTML += row;
 
@@ -62,11 +147,12 @@ addProductBtn.addEventListener("click", function () {
 });
 
 // =============================
-// Delete Product
+// Delete & Edit Product
 // =============================
 
 productTableBody.addEventListener("click", function (event) {
 
+    // Delete
     if (event.target.classList.contains("delete-btn")) {
 
         const button = event.target;
@@ -88,11 +174,35 @@ productTableBody.addEventListener("click", function (event) {
         row.remove();
 
         updateSerialNumbers();
+    }
 
+    // Edit
+    if (event.target.classList.contains("edit-btn")) {
+
+        const id = Number(event.target.dataset.id);
+
+        editProduct(id);
     }
 
 });
 
+function editProduct(id) {
+
+    const product = products.find(product => product.id === id);
+
+    if (!product) return;
+
+    productName.value = product.name;
+    price.value = product.price;
+    quantity.value = product.quantity;
+
+    editProductId = id;
+
+    addProductBtn.innerText = "Update Product";
+
+    productName.focus();
+
+}
 // =============================
 // Enter Key Navigation
 // =============================
@@ -199,14 +309,24 @@ function loadProducts() {
             <td>৳${product.price}</td>
             <td>${product.quantity}</td>
             <td>৳${total}</td>
-            <td>
+
+            <td class="space-x-2">
+
+                <button
+                    class="btn btn-info btn-sm edit-btn"
+                    data-id="${product.id}">
+                    Edit
+                </button>
+
                 <button
                     class="btn btn-error btn-sm delete-btn"
                     data-id="${product.id}"
                     data-total="${total}">
                     Delete
                 </button>
+
             </td>
+
         </tr>
         `;
 
@@ -219,6 +339,7 @@ function loadProducts() {
     serial = products.length + 1;
 
 }
+
 // =============================
 // Load Saved Data
 // =============================

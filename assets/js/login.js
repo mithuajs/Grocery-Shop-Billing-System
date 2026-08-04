@@ -6,6 +6,10 @@ loginForm.addEventListener("submit", async function (e) {
     var button = loginForm.querySelector('button[type="submit"]');
     button.disabled = true;
     try {
+        if (window.location.hostname.endsWith("github.io")) {
+            alert("এই project localhost backend-এ চলে। start-localhost.bat চালিয়ে http://127.0.0.1:3000 খুলুন।");
+            return;
+        }
         var response = await fetch("/api/auth/login", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({username:username,password:password}) });
         var result = await response.json();
         if (!response.ok) throw new Error(result.error || "লগইন ব্যর্থ হয়েছে");
@@ -13,3 +17,4 @@ loginForm.addEventListener("submit", async function (e) {
     } catch (error) { alert(error.message === "Invalid username or password" ? "ইউজারনেম অথবা পাসওয়ার্ড সঠিক নয়।" : error.message); }
     finally { button.disabled = false; }
 });
+

@@ -4,11 +4,12 @@ Bengali grocery billing system for a college project. The existing UI is unchang
 
 ## Firebase setup (one time)
 1. Firebase Console → Authentication → Sign-in method → Email/Password চালু রাখুন।
-2. Authentication → Users-এ এই admin user তৈরি করুন:
+2. Authentication → Settings → Authorized domains-এ `localhost`, `127.0.0.1` এবং `mithuajs.github.io` যোগ করুন।
+3. Authentication → Users-এ এই admin user তৈরি করুন:
    - Email: `admin@grocery-shop-billing-system.firebaseapp.com`
    - Password: কমপক্ষে ৬ অক্ষরের একটি password
-3. Firestore Database তৈরি করুন।
-4. Firebase CLI দিয়ে rules ও hosting publish করুন:
+4. Firestore Database তৈরি করুন।
+5. Firebase CLI দিয়ে rules ও hosting publish করুন:
 
 ```powershell
 npx firebase-tools login

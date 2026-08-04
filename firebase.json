@@ -12,6 +12,9 @@
       "server.mjs",
       "package.json",
       "package-lock.json",
+      "start-localhost.bat",
+      "BACKEND_PLAN.md",
+      "README.md",
       "data/**",
       "tests/**",
       ".git/**"

@@ -1,7 +1,579 @@
-@media print {
+/* ===========================
+   গ্রোসারি শপ বিলিং সিস্টেম
+   CSS Design System
+=========================== */
 
-    input,
-    button {
+/* --- Color Variables --- */
+:root {
+    --primary: #38C1B6;
+    --primary-dark: #0F8B8D;
+    --primary-light: #E8F8F5;
+    --white: #FFFFFF;
+    --text: #2D3436;
+    --text-light: #636E72;
+    --border: #E0E0E0;
+    --red: #E74C3C;
+    --red-dark: #C0392B;
+    --shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    --radius: 8px;
+}
+
+/* --- Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- Base --- */
+body {
+    font-family: 'Noto Serif Bengali', serif;
+    color: var(--text);
+    background: var(--white);
+    min-height: 100vh;
+    position: relative;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+/* --- Teal Glow Background --- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--white);
+    background-image: radial-gradient(
+        circle at top right,
+        rgba(56, 193, 182, 0.5),
+        transparent 70%
+    );
+    filter: blur(80px);
+}
+
+/* --- Layout --- */
+.container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.container-sm {
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Navbar --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.navbar-brand {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    list-style: none;
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.navbar-links a:hover {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.navbar-links a.active {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+/* --- Cards --- */
+.card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+/* --- Buttons --- */
+.btn {
+    display: inline-block;
+    padding: 7px 16px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-danger {
+    background: var(--red);
+    color: var(--white);
+}
+
+.btn-danger:hover {
+    background: var(--red-dark);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary-dark);
+    border: 1.5px solid var(--primary);
+}
+
+.btn-outline:hover {
+    background: var(--primary-light);
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+/* --- Form Inputs --- */
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.form-input {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 0.8rem;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.2s;
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: var(--primary);
+}
+
+.form-input::placeholder {
+    color: #B2BEC3;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    align-items: end;
+}
+
+/* --- Tables --- */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    padding: 7px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+}
+
+table th {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 0.78rem;
+}
+
+table tr:hover {
+    background: #F8F9FA;
+}
+
+table td .btn {
+    margin-right: 6px;
+}
+
+/* --- Product Grid --- */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.product-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(56, 193, 182, 0.15);
+}
+
+.product-icon {
+    margin-bottom: 4px;
+}
+
+.product-icon img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.product-name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+    color: var(--text);
+}
+
+.product-price {
+    font-size: 0.7rem;
+    color: var(--text-light);
+}
+
+/* --- Bill Summary --- */
+.bill-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 2px solid var(--primary-light);
+    margin-top: 12px;
+}
+
+.bill-total {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.bill-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* --- Auth Pages (Login/Register) --- */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.auth-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 360px;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4px;
+    color: var(--text);
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.8rem;
+    margin-bottom: 18px;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--text-light);
+}
+
+.auth-footer a {
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.auth-link {
+    display: block;
+    text-align: right;
+    margin-bottom: 12px;
+    font-size: 0.78rem;
+}
+
+.auth-link a {
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* --- Dashboard --- */
+.dashboard-header {
+    margin-bottom: 16px;
+}
+
+.dashboard-header h1 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.dashboard-header p {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.stat-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 2px;
+}
+
+.stat-label {
+    font-size: 0.78rem;
+    color: var(--text-light);
+}
+
+/* --- Empty State --- */
+.empty-state {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+
+/* --- Section Title --- */
+.section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+/* --- Quantity Modal --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-box {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 22px;
+    width: 90%;
+    max-width: 300px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.modal-box h3 {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.modal-actions .btn {
+    flex: 1;
+}
+
+/* --- Utility --- */
+.text-center {
+    text-align: center;
+}
+
+.mt-8 {
+    margin-top: 8px;
+}
+
+.mt-16 {
+    margin-top: 16px;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .bill-summary {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .auth-card {
+        padding: 24px 20px;
+    }
+}
+
+/* --- Print --- */
+@media print {
+    body::before {
+        display: none;
+    }
+
+    .navbar,
+    .product-grid-section,
+    .custom-form-section,
+    .bill-actions,
+    .btn,
+    .no-print {
         display: none !important;
     }
 
@@ -14,4 +586,28 @@
         border: none !important;
     }
 
+    table th {
+        background: #F0F0F0 !important;
+        color: #333 !important;
+    }
+
+    .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 16px;
+    }
+
+    .print-header h2 {
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+    }
+
+    .print-header p {
+        font-size: 0.85rem;
+        color: #666;
+    }
+}
+
+.print-header {
+    display: none;
 }

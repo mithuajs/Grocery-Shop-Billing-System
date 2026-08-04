@@ -1,11 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>লগইন — গ্রোসারি শপ</title>
+    <meta name="description" content="গ্রোসারি শপ বিলিং সিস্টেমে লগইন করুন">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body>
-    
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+
+            <h1 class="auth-title">গ্রোসারি শপ</h1>
+            <p class="auth-subtitle">আপনার অ্যাকাউন্টে লগইন করুন</p>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+                    <label class="form-label" for="email">ইমেইল</label>
+                    <input type="email" id="email" class="form-input" placeholder="আপনার ইমেইল লিখুন" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">পাসওয়ার্ড</label>
+                    <input type="password" id="password" class="form-input" placeholder="আপনার পাসওয়ার্ড লিখুন" required>
+                </div>
+
+                <div class="auth-link">
+                    <a href="./forgot-password.html">পাসওয়ার্ড ভুলে গেছেন?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">লগইন করুন</button>
+
+            </form>
+
+            <div class="auth-footer">
+                অ্যাকাউন্ট নেই? <a href="./register.html">রেজিস্টার করুন</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="../assets/js/login.js"></script>
+
 </body>
+
 </html>

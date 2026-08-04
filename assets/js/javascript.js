@@ -1,75 +1,211 @@
 
-// =============================
+// ===========================
 // DOM Elements
-// =============================
+// ===========================
 
-const productName = document.getElementById("productName");
-const price = document.getElementById("price");
-const quantity = document.getElementById("quantity");
+var productNameInput = document.getElementById("productName");
+var priceInput = document.getElementById("price");
+var quantityInput = document.getElementById("quantity");
 
-const addProductBtn = document.getElementById("addProductBtn");
+var addProductBtn = document.getElementById("addProductBtn");
 
-const productTableBody = document.getElementById("productTableBody");
-const grandTotal = document.getElementById("grandTotal");
+var productTableBody = document.getElementById("productTableBody");
+var grandTotalDisplay = document.getElementById("grandTotal");
+var emptyMessage = document.getElementById("emptyMessage");
 
-const printBtn = document.getElementById("printBtn");
-const clearBtn = document.getElementById("clearBtn");
+var printBtn = document.getElementById("printBtn");
+var clearBtn = document.getElementById("clearBtn");
 
-// =============================
+var catalogContainer = document.getElementById("productCatalog");
+
+// Modal elements
+var quantityModal = document.getElementById("quantityModal");
+var modalProductName = document.getElementById("modalProductName");
+var modalQuantity = document.getElementById("modalQuantity");
+var modalConfirm = document.getElementById("modalConfirm");
+var modalCancel = document.getElementById("modalCancel");
+
+// ===========================
 // Variables
-// =============================
+// ===========================
 
-let serial = 1;
-let totalBill = 0;
-let products = [];
+var serial = 1;
+var totalBill = 0;
+var products = [];
+var editProductId = null;
+var selectedCatalogProduct = null;
 
-let editProductId = null;
+// ===========================
+// Render Product Catalog
+// ===========================
 
-// =============================
-// Save Local Storage
-// =============================
+function renderCatalog() {
+
+    catalogContainer.innerHTML = "";
+
+    for (var i = 0; i < productCatalog.length; i++) {
+
+        var item = productCatalog[i];
+
+        var card = document.createElement("div");
+        card.className = "product-card";
+        card.setAttribute("data-id", item.id);
+
+        card.innerHTML =
+            '<div class="product-icon"><img src="' + item.icon + '" alt="' + item.name + '"></div>' +
+            '<div class="product-name">' + item.name + '</div>' +
+            '<div class="product-price">৳' + item.price + '/' + item.unit + '</div>';
+
+        card.addEventListener("click", handleCatalogClick);
+
+        catalogContainer.appendChild(card);
+    }
+}
+
+// ===========================
+// Catalog Product Click
+// ===========================
+
+function handleCatalogClick(event) {
+
+    var card = event.currentTarget;
+    var id = Number(card.getAttribute("data-id"));
+
+    // Find the product from catalog
+    selectedCatalogProduct = null;
+
+    for (var i = 0; i < productCatalog.length; i++) {
+        if (productCatalog[i].id === id) {
+            selectedCatalogProduct = productCatalog[i];
+            break;
+        }
+    }
+
+    if (!selectedCatalogProduct) return;
+
+    // Show quantity modal
+    modalProductName.innerText = selectedCatalogProduct.name + " — পরিমাণ দিন";
+    modalQuantity.value = 1;
+    quantityModal.classList.add("show");
+    modalQuantity.focus();
+}
+
+// ===========================
+// Modal Confirm
+// ===========================
+
+modalConfirm.addEventListener("click", function () {
+
+    var qty = Number(modalQuantity.value);
+
+    if (qty <= 0 || !selectedCatalogProduct) {
+        alert("সঠিক পরিমাণ দিন!");
+        return;
+    }
+
+    // Add catalog product to bill
+    var product = {
+        id: Date.now(),
+        name: selectedCatalogProduct.name,
+        price: selectedCatalogProduct.price,
+        quantity: qty
+    };
+
+    products.push(product);
+    saveProducts();
+    loadProducts();
+
+    // Close modal
+    quantityModal.classList.remove("show");
+    selectedCatalogProduct = null;
+});
+
+// ===========================
+// Modal Cancel
+// ===========================
+
+modalCancel.addEventListener("click", function () {
+    quantityModal.classList.remove("show");
+    selectedCatalogProduct = null;
+});
+
+// Close modal on overlay click
+quantityModal.addEventListener("click", function (event) {
+    if (event.target === quantityModal) {
+        quantityModal.classList.remove("show");
+        selectedCatalogProduct = null;
+    }
+});
+
+// Modal quantity enter key
+modalQuantity.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        modalConfirm.click();
+    }
+});
+
+// ===========================
+// Save to LocalStorage
+// ===========================
 
 function saveProducts() {
     localStorage.setItem("products", JSON.stringify(products));
 }
 
-// =============================
-// Update Serial Number
-// =============================
+// ===========================
+// Update Serial Numbers
+// ===========================
 
 function updateSerialNumbers() {
 
-    const rows = productTableBody.querySelectorAll("tr");
+    var rows = productTableBody.querySelectorAll("tr");
 
-    rows.forEach((row, index) => {
-        row.cells[0].innerText = index + 1;
-    });
+    for (var i = 0; i < rows.length; i++) {
+        rows[i].cells[0].innerText = i + 1;
+    }
 
     serial = rows.length + 1;
 }
 
+// ===========================
+// Update Empty State
+// ===========================
 
-// =============================
-// Add Product
-// =============================
+function updateEmptyState() {
+    if (products.length === 0) {
+        emptyMessage.style.display = "block";
+    } else {
+        emptyMessage.style.display = "none";
+    }
+}
+
+// ===========================
+// Add Custom Product
+// ===========================
 
 addProductBtn.addEventListener("click", function () {
 
-    const name = productName.value.trim();
-    const productPrice = Number(price.value);
-    const productQuantity = Number(quantity.value);
+    var name = productNameInput.value.trim();
+    var productPrice = Number(priceInput.value);
+    var productQuantity = Number(quantityInput.value);
 
     if (name === "" || productPrice <= 0 || productQuantity <= 0) {
-        alert("Please fill all fields correctly.");
+        alert("সব তথ্য সঠিকভাবে পূরণ করুন।");
         return;
     }
 
-    // =============================
     // Edit Mode
-    // =============================
     if (editProductId !== null) {
 
-        const product = products.find(product => product.id === editProductId);
+        var product = null;
+
+        for (var i = 0; i < products.length; i++) {
+            if (products[i].id === editProductId) {
+                product = products[i];
+                break;
+            }
+        }
 
         if (!product) return;
 
@@ -82,155 +218,157 @@ addProductBtn.addEventListener("click", function () {
         saveProducts();
         loadProducts();
 
-        addProductBtn.innerText = "Add Product";
+        addProductBtn.innerText = "যোগ করুন";
 
-        productName.value = "";
-        price.value = "";
-        quantity.value = "";
+        productNameInput.value = "";
+        priceInput.value = "";
+        quantityInput.value = "";
 
-        productName.focus();
+        productNameInput.focus();
 
         return;
     }
 
-    // =============================
     // Add New Product
-    // =============================
-
-    const product = {
+    var newProduct = {
         id: Date.now(),
         name: name,
         price: productPrice,
         quantity: productQuantity
     };
 
-    products.push(product);
+    products.push(newProduct);
 
     saveProducts();
     loadProducts();
 
-    productName.value = "";
-    price.value = "";
-    quantity.value = "";
+    productNameInput.value = "";
+    priceInput.value = "";
+    quantityInput.value = "";
 
-    productName.focus();
+    productNameInput.focus();
 
 });
 
-// =============================
+// ===========================
 // Delete & Edit Product
-// =============================
+// ===========================
 
 productTableBody.addEventListener("click", function (event) {
 
     // Delete
     if (event.target.classList.contains("delete-btn")) {
 
-        const button = event.target;
-
-        const row = button.closest("tr");
-
-        const rowTotal = Number(button.dataset.total);
+        var button = event.target;
+        var row = button.closest("tr");
+        var rowTotal = Number(button.getAttribute("data-total"));
 
         totalBill -= rowTotal;
+        grandTotalDisplay.innerText = "৳" + totalBill;
 
-        grandTotal.innerText = "৳" + totalBill;
+        var id = Number(button.getAttribute("data-id"));
 
-        const id = Number(button.dataset.id);
-
-        products = products.filter(product => product.id !== id);
+        var newProducts = [];
+        for (var i = 0; i < products.length; i++) {
+            if (products[i].id !== id) {
+                newProducts.push(products[i]);
+            }
+        }
+        products = newProducts;
 
         saveProducts();
 
         row.remove();
 
         updateSerialNumbers();
+        updateEmptyState();
     }
 
     // Edit
     if (event.target.classList.contains("edit-btn")) {
 
-        const id = Number(event.target.dataset.id);
+        var editId = Number(event.target.getAttribute("data-id"));
 
-        editProduct(id);
+        editProduct(editId);
     }
 
 });
 
 function editProduct(id) {
 
-    const product = products.find(product => product.id === id);
+    var product = null;
+
+    for (var i = 0; i < products.length; i++) {
+        if (products[i].id === id) {
+            product = products[i];
+            break;
+        }
+    }
 
     if (!product) return;
 
-    productName.value = product.name;
-    price.value = product.price;
-    quantity.value = product.quantity;
+    productNameInput.value = product.name;
+    priceInput.value = product.price;
+    quantityInput.value = product.quantity;
 
     editProductId = id;
 
-    addProductBtn.innerText = "Update Product";
+    addProductBtn.innerText = "আপডেট করুন";
 
-    productName.focus();
+    productNameInput.focus();
 
 }
-// =============================
+
+// ===========================
 // Enter Key Navigation
-// =============================
+// ===========================
 
-productName.addEventListener("keydown", function (e) {
-
+productNameInput.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
-
         e.preventDefault();
-
-        price.focus();
-
+        priceInput.focus();
     }
-
 });
 
-price.addEventListener("keydown", function (e) {
-
+priceInput.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
-
         e.preventDefault();
-
-        quantity.focus();
-
+        quantityInput.focus();
     }
-
 });
 
-quantity.addEventListener("keydown", function (e) {
-
+quantityInput.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
-
         e.preventDefault();
-
         addProductBtn.click();
-
     }
-
 });
 
-// =============================
+// ===========================
 // Print Bill
-// =============================
+// ===========================
 
 printBtn.addEventListener("click", function () {
+
+    // Set print date
+    var today = new Date();
+    var dateStr = today.toLocaleDateString("bn-BD");
+    var printDate = document.getElementById("printDate");
+    if (printDate) {
+        printDate.innerText = dateStr;
+    }
 
     window.print();
 
 });
 
-// =============================
+// ===========================
 // Clear Bill
-// =============================
+// ===========================
 
 clearBtn.addEventListener("click", function () {
 
-    if (!confirm("Are you sure you want to clear the bill?")) {
+    if (!confirm("আপনি কি সত্যিই পুরো বিল মুছে ফেলতে চান?")) {
         return;
     }
 
@@ -238,7 +376,7 @@ clearBtn.addEventListener("click", function () {
 
     totalBill = 0;
 
-    grandTotal.innerText = "৳0";
+    grandTotalDisplay.innerText = "৳০";
 
     serial = 1;
 
@@ -246,75 +384,65 @@ clearBtn.addEventListener("click", function () {
 
     localStorage.removeItem("products");
 
-    productName.focus();
+    updateEmptyState();
+
+    productNameInput.focus();
 
 });
 
 
-// =============================
+// ===========================
 // Load Products
-// =============================
+// ===========================
 
 function loadProducts() {
 
-    const storedProducts = JSON.parse(localStorage.getItem("products"));
+    var storedProducts = JSON.parse(localStorage.getItem("products"));
 
-    if (!storedProducts) return;
-
-    products = storedProducts;
+    if (storedProducts) {
+        products = storedProducts;
+    }
 
     productTableBody.innerHTML = "";
 
     totalBill = 0;
 
-    products.forEach((product, index) => {
+    for (var i = 0; i < products.length; i++) {
 
-        const total = product.price * product.quantity;
+        var product = products[i];
+        var total = product.price * product.quantity;
 
         totalBill += total;
 
-        const row = `
-        <tr>
-            <td>${index + 1}</td>
-            <td>${product.name}</td>
-            <td>৳${product.price}</td>
-            <td>${product.quantity}</td>
-            <td>৳${total}</td>
-
-            <td class="space-x-2">
-
-                <button
-                    class="btn btn-info btn-sm edit-btn"
-                    data-id="${product.id}">
-                    Edit
-                </button>
-
-                <button
-                    class="btn btn-error btn-sm delete-btn"
-                    data-id="${product.id}"
-                    data-total="${total}">
-                    Delete
-                </button>
-
-            </td>
-
-        </tr>
-        `;
+        var row = '<tr>' +
+            '<td>' + (i + 1) + '</td>' +
+            '<td>' + product.name + '</td>' +
+            '<td>৳' + product.price + '</td>' +
+            '<td>' + product.quantity + '</td>' +
+            '<td>৳' + total + '</td>' +
+            '<td class="no-print">' +
+                '<button class="btn btn-outline btn-sm edit-btn" data-id="' + product.id + '">এডিট</button>' +
+                '<button class="btn btn-danger btn-sm delete-btn" data-id="' + product.id + '" data-total="' + total + '">মুছুন</button>' +
+            '</td>' +
+        '</tr>';
 
         productTableBody.innerHTML += row;
 
-    });
+    }
 
-    grandTotal.innerText = "৳" + totalBill;
+    grandTotalDisplay.innerText = "৳" + totalBill;
 
     serial = products.length + 1;
 
-    addProductBtn.innerText = "Add Product";
+    addProductBtn.innerText = "যোগ করুন";
+
+    updateEmptyState();
 
 }
 
-// =============================
-// Load Saved Data
-// =============================
+// ===========================
+// Initialize
+// ===========================
 
+renderCatalog();
 loadProducts();

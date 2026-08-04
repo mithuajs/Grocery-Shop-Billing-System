@@ -1,20 +1,34 @@
-﻿# Grocery Shop Billing System
+# Grocery Shop Billing System
 
-Bengali grocery billing system for a college/client project. The existing UI is served by a dependency-free Node.js backend.
+Bengali grocery billing system for a college project. The existing UI is unchanged; Firebase Authentication and Cloud Firestore now provide the shared backend.
 
-## Start
+## Firebase setup (one time)
+1. Firebase Console → Authentication → Sign-in method → Email/Password চালু রাখুন।
+2. Authentication → Users-এ এই admin user তৈরি করুন:
+   - Email: `admin@grocery-shop-billing-system.firebaseapp.com`
+   - Password: কমপক্ষে ৬ অক্ষরের একটি password
+3. Firestore Database তৈরি করুন।
+4. Firebase CLI দিয়ে rules ও hosting publish করুন:
+
 ```powershell
-npm start
+npx firebase-tools login
+npx firebase-tools use grocery-shop-billing-system
+npx firebase-tools deploy --only firestore:rules,hosting
 ```
-Then open `http://127.0.0.1:3000`.
 
 ## Login
 - Username: `Admin`
-- Password: `SPI99`
+- Password: Firebase Authentication-এ admin user তৈরির সময় দেওয়া password
 
-## Test
+প্রথম সফল login-এর পরে Firestore খালি থাকলে ৯টি sample product স্বয়ংক্রিয়ভাবে যোগ হবে। Product, stock, bill এবং sales history Firestore-এ সংরক্ষিত হবে।
+
+## Local run
+```powershell
+npm start
+```
+তারপর `http://127.0.0.1:3000/page/login.html` খুলুন। Browser এখন Firebase backend ব্যবহার করবে।
+
+## Local API tests
 ```powershell
 npm test
 ```
-
-Data is created in `data/store.json` on first start. Set `ADMIN_PASSWORD` and `DATA_FILE` environment variables for deployment. See [BACKEND_PLAN.md](./BACKEND_PLAN.md).

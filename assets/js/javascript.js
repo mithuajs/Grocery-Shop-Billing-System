@@ -348,18 +348,24 @@ quantityInput.addEventListener("keydown", function (e) {
 // Print Bill
 // ===========================
 
-printBtn.addEventListener("click", function () {
-
-    // Set print date
-    var today = new Date();
-    var dateStr = today.toLocaleDateString("bn-BD");
-    var printDate = document.getElementById("printDate");
-    if (printDate) {
-        printDate.innerText = dateStr;
-    }
-
-    window.print();
-
+printBtn.addEventListener("click", async function () {
+    if (products.length === 0) { alert("আগে পণ্য যোগ করুন।"); return; }
+    printBtn.disabled = true;
+    try {
+        var response = await fetch("/api/sales", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ items: products, discount: 0, paymentMethod: "নগদ" })
+        });
+        var result = await response.json();
+        if (response.status === 401) { window.location.href = "./page/login.html"; return; }
+        if (!response.ok) throw new Error(result.error || "বিল সংরক্ষণ করা যায়নি");
+        var today = new Date();
+        var printDate = document.getElementById("printDate");
+        if (printDate) printDate.innerText = today.toLocaleDateString("bn-BD") + " · " + result.sale.invoiceNo;
+        window.print();
+    } catch (error) { alert(error.message); }
+    finally { printBtn.disabled = false; }
 });
 
 // ===========================
@@ -444,5 +450,24 @@ function loadProducts() {
 // Initialize
 // ===========================
 
-renderCatalog();
-loadProducts();
+async function initializeBilling() {
+    try {
+        var me = await fetch("/api/auth/me");
+        if (!me.ok) { window.location.href = "./page/login.html"; return; }
+        var response = await fetch("/api/products");
+        var data = await response.json();
+        if (response.ok && data.products) productCatalog = data.products;
+    } catch (error) { console.error("Backend connection failed", error); }
+    renderCatalog();
+    loadProducts();
+}
+
+document.querySelectorAll('a[href$="login.html"]').forEach(function (link) {
+    link.addEventListener("click", async function (event) {
+        event.preventDefault();
+        try { await fetch("/api/auth/logout", { method: "POST" }); } catch (_) {}
+        window.location.href = link.getAttribute("href");
+    });
+});
+
+initializeBilling();

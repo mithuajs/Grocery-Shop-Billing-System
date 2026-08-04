@@ -611,3 +611,15 @@ table td .btn {
 .print-header {
     display: none;
 }
+/* Minimal college project features */
+.college-stats{grid-template-columns:repeat(4,1fr)}
+.college-dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.college-actions{display:flex;gap:8px;flex-wrap:wrap}
+.college-list>div{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:.8rem}
+.college-list>div:last-child{border-bottom:0}.college-list strong{color:var(--red)}
+.college-product-form{display:grid;grid-template-columns:1.4fr .7fr .7fr .7fr .8fr auto auto;gap:8px;align-items:end}
+.college-section-head,.college-heading-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.college-search{max-width:230px}
+.stock-status{display:inline-block;padding:3px 7px;border-radius:6px;background:var(--primary-light);color:var(--primary-dark);font-size:.72rem}.stock-status.low{background:#fff0ed;color:var(--red)}
+.college-sales-stats{grid-template-columns:repeat(2,1fr);max-width:520px}.college-message{position:fixed;right:20px;bottom:20px;padding:10px 14px;border-radius:8px;background:var(--primary-dark);color:white;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}.college-message.show{opacity:1;transform:none}.college-message.error{background:var(--red)}
+@media(max-width:900px){.college-stats{grid-template-columns:repeat(2,1fr)}.college-product-form{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.college-dashboard-grid{grid-template-columns:1fr}.college-product-form{grid-template-columns:1fr}.college-section-head,.college-heading-row{align-items:flex-start;flex-direction:column}.college-search{max-width:none}.navbar-links{flex-wrap:wrap;justify-content:center}}

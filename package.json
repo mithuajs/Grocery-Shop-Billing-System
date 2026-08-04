@@ -1,0 +1,15 @@
+﻿{
+    "name":  "grocery-shop-billing-system",
+    "version":  "2.0.0",
+    "private":  true,
+    "type":  "module",
+    "description":  "College grocery billing system with a dependency-free Node.js backend",
+    "scripts":  {
+                    "dev":  "node server.mjs",
+                    "start":  "node server.mjs",
+                    "test":  "node --test tests/api.test.mjs"
+                },
+    "engines":  {
+                    "node":  "\u003e=20"
+                }
+}

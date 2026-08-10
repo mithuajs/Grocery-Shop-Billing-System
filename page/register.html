@@ -2,62 +2,389 @@
 <html lang="bn">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>রেজিস্টার — গ্রোসারি শপ</title>
-    <meta name="description" content="গ্রোসারি শপ বিলিং সিস্টেমে নতুন অ্যাকাউন্ট তৈরি করুন">
+
 
     <!-- Google Font -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@100..900&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@100..900&display=swap"
+        rel="stylesheet">
+
 
     <!-- CSS -->
+
     <link rel="stylesheet" href="../assets/css/style.css">
+
 </head>
+
 
 <body>
 
+
+    <!-- ========================================
+         Register Card
+    ======================================== -->
+
     <div class="auth-wrapper">
+
         <div class="auth-card">
 
-            <h1 class="auth-title">গ্রোসারি শপ</h1>
-            <p class="auth-subtitle">নতুন অ্যাকাউন্ট তৈরি করুন</p>
+
+            <h1 class="auth-title">
+
+                গ্রোসারি শপ
+
+            </h1>
+
+
+            <p class="auth-subtitle">
+
+                নতুন অ্যাকাউন্ট তৈরি করুন
+
+            </p>
+
+
+            <!-- Register Form -->
 
             <form id="registerForm">
 
+
+                <!-- Name -->
+
                 <div class="form-group">
-                    <label class="form-label" for="name">পুরো নাম</label>
+
+                    <label class="form-label" for="name">
+
+                        পুরো নাম
+
+                    </label>
+
+
                     <input type="text" id="name" class="form-input" placeholder="আপনার নাম লিখুন" required>
+
                 </div>
 
+
+                <!-- Email -->
+
                 <div class="form-group">
-                    <label class="form-label" for="email">ইমেইল</label>
+
+                    <label class="form-label" for="email">
+
+                        ইমেইল
+
+                    </label>
+
+
                     <input type="email" id="email" class="form-input" placeholder="আপনার ইমেইল লিখুন" required>
+
                 </div>
 
+
+                <!-- Password -->
+
                 <div class="form-group">
-                    <label class="form-label" for="password">পাসওয়ার্ড</label>
+
+                    <label class="form-label" for="password">
+
+                        পাসওয়ার্ড
+
+                    </label>
+
+
                     <input type="password" id="password" class="form-input" placeholder="পাসওয়ার্ড তৈরি করুন" required>
+
                 </div>
+
+
+                <!-- Confirm Password -->
 
                 <div class="form-group">
-                    <label class="form-label" for="confirmPassword">পাসওয়ার্ড নিশ্চিত করুন</label>
-                    <input type="password" id="confirmPassword" class="form-input" placeholder="আবার পাসওয়ার্ড লিখুন" required>
+
+                    <label class="form-label" for="confirmPassword">
+
+                        পাসওয়ার্ড নিশ্চিত করুন
+
+                    </label>
+
+
+                    <input type="password" id="confirmPassword" class="form-input" placeholder="আবার পাসওয়ার্ড লিখুন"
+                        required>
+
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block">রেজিস্টার করুন</button>
+
+                <!-- Register Button -->
+
+                <button type="submit" id="registerButton" class="btn btn-primary btn-block">
+
+                    রেজিস্টার করুন
+
+                </button>
+
 
             </form>
 
+
+            <!-- Login -->
+
             <div class="auth-footer">
-                ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="./login.html">লগইন করুন</a>
+
+                ইতিমধ্যে অ্যাকাউন্ট আছে?
+
+                <a href="./login.html">
+
+                    লগইন করুন
+
+                </a>
+
             </div>
 
+
         </div>
+
     </div>
 
-    <script src="../assets/js/register.js"></script>
+
+
+    <!-- ========================================
+         Firebase Libraries
+    ======================================== -->
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+
+    <!-- Firebase Configuration -->
+
+    <script src="../assets/js/firebase.js"></script>
+
+
+
+    <!-- ========================================
+         Register System
+    ======================================== -->
+
+    <script>
+
+        var registerForm =
+            document.getElementById("registerForm");
+
+        var registerButton =
+            document.getElementById("registerButton");
+
+
+        registerForm.addEventListener(
+            "submit",
+            async function (e) {
+
+                e.preventDefault();
+
+
+                var name =
+                    document.getElementById("name")
+                        .value.trim();
+
+
+                var email =
+                    document.getElementById("email")
+                        .value.trim();
+
+
+                var password =
+                    document.getElementById("password")
+                        .value;
+
+
+                var confirmPassword =
+                    document.getElementById("confirmPassword")
+                        .value;
+
+
+                // ========================================
+                // Validation
+                // ========================================
+
+
+                if (
+                    name === "" ||
+                    email === "" ||
+                    password === "" ||
+                    confirmPassword === ""
+                ) {
+
+                    alert(
+                        "সব তথ্য পূরণ করুন।"
+                    );
+
+                    return;
+
+                }
+
+
+                if (password.length < 6) {
+
+                    alert(
+                        "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।"
+                    );
+
+                    return;
+
+                }
+
+
+                if (password !== confirmPassword) {
+
+                    alert(
+                        "পাসওয়ার্ড মিলছে না।"
+                    );
+
+                    return;
+
+                }
+
+
+                registerButton.disabled = true;
+
+                registerButton.innerText =
+                    "রেজিস্টার হচ্ছে...";
+
+
+                try {
+
+
+                    // ========================================
+                    // Create Firebase Account
+                    // ========================================
+
+                    var userCredential =
+                        await auth.createUserWithEmailAndPassword(
+                            email,
+                            password
+                        );
+
+
+                    var user =
+                        userCredential.user;
+
+
+                    // ========================================
+                    // Save User Name
+                    // ========================================
+
+                    await user.updateProfile({
+
+                        displayName: name
+
+                    });
+
+
+                    // ========================================
+                    // Save User Information in Firestore
+                    // ========================================
+
+                    await db.collection("users")
+                        .doc(user.uid)
+                        .set({
+
+                            uid: user.uid,
+
+                            name: name,
+
+                            email: email,
+
+                            createdAt:
+                                firebase.firestore.FieldValue.serverTimestamp()
+
+                        });
+
+
+                    alert(
+                        "রেজিস্ট্রেশন সফল হয়েছে!"
+                    );
+
+
+                    // Login Page
+
+                    window.location.href =
+                        "./login.html";
+
+
+                } catch (error) {
+
+
+                    console.error(error);
+
+
+                    if (
+                        error.code ===
+                        "auth/email-already-in-use"
+                    ) {
+
+                        alert(
+                            "এই ইমেইল দিয়ে ইতিমধ্যে অ্যাকাউন্ট আছে।"
+                        );
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/invalid-email"
+                    ) {
+
+                        alert(
+                            "সঠিক ইমেইল দিন।"
+                        );
+
+                    }
+
+                    else if (
+                        error.code ===
+                        "auth/weak-password"
+                    ) {
+
+                        alert(
+                            "পাসওয়ার্ড আরও শক্তিশালী দিন।"
+                        );
+
+                    }
+
+                    else {
+
+                        alert(
+                            "রেজিস্ট্রেশন করতে সমস্যা হয়েছে।\n" +
+                            error.message
+                        );
+
+                    }
+
+                }
+
+
+                registerButton.disabled = false;
+
+                registerButton.innerText =
+                    "রেজিস্টার করুন";
+
+
+            }
+
+        );
+
+    </script>
+
 
 </body>
 

@@ -1,5 +1,70 @@
-<!DOCTYPE html><html lang="bn"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>বিক্রয় — গ্রোসারি শপ</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@100..900&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/css/style.css"></head><body>
-<nav class="navbar"><a href="./dashboard.html" class="navbar-brand">গ্রোসারি শপ</a><ul class="navbar-links"><li><a href="./dashboard.html">ড্যাশবোর্ড</a></li><li><a href="../index.html">বিলিং</a></li><li><a href="./products.html">পণ্য</a></li><li><a class="active" href="./sales.html">বিক্রয়</a></li><li><a href="./login.html" class="btn btn-outline btn-sm">লগআউট</a></li></ul></nav>
-<main class="container"><div class="dashboard-header college-heading-row"><div><h1>বিক্রয়ের ইতিহাস</h1><p>সম্পন্ন bill এবং invoice তালিকা</p></div><button id="exportCsv" class="btn btn-outline">CSV ডাউনলোড</button></div><div class="stats-grid college-sales-stats"><div class="stat-card"><div class="stat-value" id="salesCount">০</div><div class="stat-label">মোট বিল</div></div><div class="stat-card"><div class="stat-value" id="salesTotal">৳০</div><div class="stat-label">মোট বিক্রয়</div></div></div><section class="card"><div class="table-wrapper"><table><thead><tr><th>ইনভয়েস</th><th>তারিখ</th><th>সময়</th><th>আইটেম</th><th>পেমেন্ট</th><th>ডিসকাউন্ট</th><th>মোট</th></tr></thead><tbody id="salesRows"></tbody></table></div><div id="emptySales" class="empty-state">এখনো কোনো bill সম্পন্ন হয়নি।</div></section></main><script src="../assets/js/firebase-adapter.js?v=1"></script>
-    <script src="../assets/js/sales.js?v=2"></script></body></html>
+﻿<!DOCTYPE html>
+<html lang="bn">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>বিক্রয় — গ্রোসারি শপ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar"><a href="./dashboard.html" class="navbar-brand">গ্রোসারি শপ</a>
+        <ul class="navbar-links">
+            <li><a href="./dashboard.html">ড্যাশবোর্ড</a></li>
+            <li><a href="../index.html">বিলিং</a></li>
+            <li><a href="./products.html">পণ্য</a></li>
+            <li><a class="active" href="./sales.html">বিক্রয়</a></li>
+            <li><a href="./login.html" class="btn btn-outline btn-sm">লগআউট</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <div class="dashboard-header college-heading-row">
+            <div>
+                <h1>বিক্রয়ের ইতিহাস</h1>
+                <p>সম্পন্ন bill এবং invoice তালিকা</p>
+            </div><button id="exportCsv" class="btn btn-outline">CSV ডাউনলোড</button>
+        </div>
+        <div class="stats-grid college-sales-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="salesCount">০</div>
+                <div class="stat-label">মোট বিল</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="salesTotal">৳০</div>
+                <div class="stat-label">মোট বিক্রয়</div>
+            </div>
+        </div>
+        <section class="card">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ইনভয়েস</th>
+                            <th>তারিখ</th>
+                            <th>সময়</th>
+                            <th>আইটেম</th>
+                            <th>পেমেন্ট</th>
+                            <th>ডিসকাউন্ট</th>
+                            <th>মোট</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesRows"></tbody>
+                </table>
+            </div>
+            <div id="emptySales" class="empty-state">এখনো কোনো bill সম্পন্ন হয়নি।</div>
+        </section>
+    </main>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+    <script src="../assets/js/firebase.js"></script>
+    <script src="../assets/js/sales.js"></script>
+</body>
+
+</html>

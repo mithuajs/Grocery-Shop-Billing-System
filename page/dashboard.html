@@ -1,32 +1,91 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="bn">
+
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ড্যাশবোর্ড — গ্রোসারি শপ</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
-<nav class="navbar">
-    <a href="./dashboard.html" class="navbar-brand">গ্রোসারি শপ</a>
-    <ul class="navbar-links"><li><a href="./dashboard.html" class="active">ড্যাশবোর্ড</a></li><li><a href="../index.html">বিলিং</a></li><li><a href="./products.html">পণ্য</a></li><li><a href="./sales.html">বিক্রয়</a></li><li><a href="./login.html" class="btn btn-outline btn-sm">লগআউট</a></li></ul>
-</nav>
-<main class="container">
-    <div class="dashboard-header"><h1>স্বাগতম!</h1><p>গ্রোসারি শপের আজকের সংক্ষিপ্ত অবস্থা।</p></div>
-    <div class="stats-grid college-stats">
-        <div class="stat-card"><div class="stat-value" id="totalProducts">০</div><div class="stat-label">মোট পণ্য</div></div>
-        <div class="stat-card"><div class="stat-value" id="todayBills">০</div><div class="stat-label">আজকের বিল</div></div>
-        <div class="stat-card"><div class="stat-value" id="todaySales">৳০</div><div class="stat-label">আজকের বিক্রি</div></div>
-        <div class="stat-card"><div class="stat-value" id="lowStockCount">০</div><div class="stat-label">কম স্টক</div></div>
-    </div>
-    <div class="college-dashboard-grid">
-        <section class="card"><h2 class="card-title">দ্রুত কাজ</h2><div class="college-actions"><a href="../index.html" class="btn btn-primary">নতুন বিল</a><a href="./products.html" class="btn btn-outline">পণ্য যোগ করুন</a><a href="./sales.html" class="btn btn-outline">বিক্রয় দেখুন</a></div></section>
-        <section class="card"><h2 class="card-title">কম স্টকের পণ্য</h2><div id="lowStockList" class="college-list"></div></section>
-    </div>
-    <section class="card"><h2 class="card-title">সাম্প্রতিক ৫টি বিল</h2><div class="table-wrapper"><table><thead><tr><th>ইনভয়েস</th><th>সময়</th><th>আইটেম</th><th>পেমেন্ট</th><th>মোট</th></tr></thead><tbody id="recentSales"></tbody></table></div></section>
-</main>
-<script src="../assets/js/firebase-adapter.js?v=1"></script>
-    <script src="../assets/js/dashboard.js?v=2"></script>
-</body></html>
 
+<body>
+    <nav class="navbar">
+        <a href="./dashboard.html" class="navbar-brand">গ্রোসারি শপ</a>
+        <ul class="navbar-links">
+            <li><a href="./dashboard.html" class="active">ড্যাশবোর্ড</a></li>
+            <li><a href="../index.html">বিলিং</a></li>
+            <li><a href="./products.html">পণ্য</a></li>
+            <li><a href="./sales.html">বিক্রয়</a></li>
+            <li><a href="./login.html" class="btn btn-outline btn-sm">লগআউট</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <div class="dashboard-header">
+            <h1>স্বাগতম!</h1>
+            <p>গ্রোসারি শপের আজকের সংক্ষিপ্ত অবস্থা।</p>
+        </div>
+        <div class="stats-grid college-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalProducts">০</div>
+                <div class="stat-label">মোট পণ্য</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="todayBills">০</div>
+                <div class="stat-label">আজকের বিল</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="todaySales">৳০</div>
+                <div class="stat-label">আজকের বিক্রি</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="lowStockCount">০</div>
+                <div class="stat-label">কম স্টক</div>
+            </div>
+        </div>
+        <div class="college-dashboard-grid">
+            <section class="card">
+                <h2 class="card-title">দ্রুত কাজ</h2>
+                <div class="college-actions"><a href="../index.html" class="btn btn-primary">নতুন বিল</a><a
+                        href="./products.html" class="btn btn-outline">পণ্য যোগ করুন</a><a href="./sales.html"
+                        class="btn btn-outline">বিক্রয় দেখুন</a></div>
+            </section>
+            <section class="card">
+                <h2 class="card-title">কম স্টকের পণ্য</h2>
+                <div id="lowStockList" class="college-list"></div>
+            </section>
+        </div>
+        <section class="card">
+            <h2 class="card-title">সাম্প্রতিক ৫টি বিল</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ইনভয়েস</th>
+                            <th>সময়</th>
+                            <th>আইটেম</th>
+                            <th>পেমেন্ট</th>
+                            <th>মোট</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentSales"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+    <script src="../assets/js/firebase.js"></script>
+
+    <script src="../assets/js/dashboard.js"></script>
+</body>
+
+</html>
